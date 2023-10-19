@@ -1,0 +1,184 @@
+.register {
+  height: auto;
+  width: 400px;
+  background-color: rgba(255, 255, 255, 0.03);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+  margin-top: 50px;
+  align-items: center;
+
+}
+.fontcenter{
+  margin-left: 140px;
+  margin-bottom: 10px;
+
+}
+.marginTops{
+  margin-top: 200px;
+  align-items: center;
+}
+.h111{
+  opacity: 0.8;
+  font-size: 20px;
+}
+.transparent {
+  background-color: transparent;
+}
+.register > h1 {
+  margin-bottom: 10px;
+  margin-top: 10px;
+
+
+}
+.register > .Button {
+  margin-top: -20px;
+
+
+
+
+}
+
+@media (max-width: 767px) {
+  .register {
+margin-top: 200px;
+  }
+ 
+}
+.tab {
+  display: none;
+}
+
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+/* Mark the active step: */
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #04AA6D;
+}  
+.h11 {
+  margin-top: -50px;
+}
+.register * {
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+.div2 {
+background-color:#e5ded2;
+
+height: 400px;
+}
+.alert{
+color: white;
+margin: 0px;
+background-color: rgba(126, 28, 28, 0.409);
+border-radius: 10px;
+backdrop-filter: blur(15px);
+border: 2px solid rgba(220, 27, 27, 0.868);
+box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+padding-bottom: 40px ;
+width: auto;
+height: 50px;
+position: absolute;
+z-index: 3;
+text-align: center;
+justify-content: center;
+}
+
+
+.alertgreen{
+  color: white;
+  margin: 0px;
+  margin-left: -150px;
+font-weight: 700;
+  background-color: rgba(89, 224, 109, 0.409);
+  border-radius: 10px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(53, 220, 27, 0.868);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding-bottom: 40px ;
+  width: 300px;
+  height: 50px;
+  position: absolute;
+  z-index: 3;
+  text-align: center;
+  justify-content: center;
+  }
+.hide {
+  display: none;
+}
+.visibility-icon {
+  padding: 0.5rem;
+  color: #aaa;
+  cursor: pointer;
+  position: absolute;
+  margin-top:-45px;
+  margin-left:290px;
+
+}
+
+.register > label {
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+}
+.register > input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+::placeholder {
+  color: #e1e1e1;
+}
+
+.register > input:hover{
+  outline: 2px solid #0001;
+}
+.register > button {
+  margin-top: 50px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tacbox {
+  display:block;
+  max-width: 1000px;
+  color :rgba(8, 7, 16, 0.6)
+}
+
+.tacbox > input {
+  height: 2em;
+  width: 2em;
+  vertical-align: middle;
+}
