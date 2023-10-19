@@ -1,8 +1,7 @@
 const asynHandler = require("express-async-handler")
 const bcrypt = require('bcryptjs')
 const User = require('../Models/user.js')
-const Coach = require('../Models/coach.js')
-const Sponsor = require('../Models/sponsor.js')
+
 const { generatorOTP ,mailTransport,generateToken } = require('./utils/mail.js')
 const verficationToken = require('../Models/token.js')
 const validator = require("email-validator");
@@ -81,47 +80,7 @@ const registerUser = asynHandler( async ( req , res )=> {
               }
 
         
-    })
-    //Sponsor Creation
-    console.log(file)
-    const fil=file
-    if (entrepriseName && sector && descriptionSponsor ){
-        const sponsor = await Sponsor.create({
-            user:user._id,
-            entrepriseName:entrepriseName,
-            sector:sector,
-            descriptionSponsor:descriptionSponsor,
-            file:fil
-           
-        })
-            
-    }
-    
-
-    console.log(speciality)
-    console.log(descriptionCoach)
-    console.log(dateDebutExperience)
-    console.log(dateFinExperience)
-    console.log(titrePoste)
-    console.log("============================")
-
-    console.log(entrepriseName)
-    console.log(sector)
-    console.log(descriptionSponsor)
-        //Coach Creation
-
-        if (speciality  ){
-            const coach = await Coach.create({
-            user:user._id,
-            speciality:speciality,
-            descriptionCoach:descriptionCoach,
-            dateDebutExperience: dateDebutExperience,
-            dateFinExperience : dateFinExperience,
-            titrePoste: titrePoste,
-            file:fil
-        })
-            
-    }
+    });
 
     //const token = createToken(user._id);
 
@@ -301,24 +260,11 @@ const user = await User.findOne({emailToken});
 const logIn = asynHandler( async (req,res)=>{
         const  { email , password } = req.body
         
-        const user = await User.findOne({ email: email }).populate('enrollment');
-        const coach = await Coach.findOne({ user: user._id })
-        const sponsor = await Sponsor.findOne({ user: user._id })
+        const user = await User.findOne({ email: email });
+
 
         if (user &&(await bcrypt.compare(password,user.password) ) ) {
-          if (!user.enrollment) {
-            user.enrollment = {
-                completionStatus: 'Not started',
-                course: 'Placeholder course id',
-                enrollmentDate: 'Placeholder enrollment date',
-                learner: 'Placeholder learner id',
-                test: 'Not started',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                __v: 0,
-                _id: 'Placeholder enrollement id'
-            };
-        }
+        
             res.json({
                 _id: user._id,
                 email: user.email,
@@ -334,9 +280,7 @@ const logIn = asynHandler( async (req,res)=>{
                 dateOfBirth : user.dateOfBirth, 
                 token: generateToken(user._id),
                 certified : user.certified,
-                enrollement : user.enrollment,
-                coach: coach,
-                sponsor: sponsor
+
             })
             
         }else{

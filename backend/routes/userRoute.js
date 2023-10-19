@@ -10,18 +10,12 @@ const {
     reset,
     forgetPass,
     updateUser,
-    updateSponsor,
-    updateCoach,
     findUserById,
     getAllUser,
     ApproveUser,
-    GetCoach,
-    GetSponsor,
     bloque,
     Unbloque,
     Search,
-    coach,
-    sponsor,
     allUsers
 
 } = require('../Controllers/userController.js')
@@ -63,18 +57,11 @@ router.post('/reset-password',validator,reset)
 
 router.put('/updateUser/:id',upload.single('imageUrl'),updateUser)
 
-router.put('/updateSponsor/:id',upload.single('imageUrl'),updateSponsor)
-
-router.put('/updateCoach/:id',upload.single('imageUrl'),updateCoach)
-
 router.get('/getuser/:id',protectSimpleUser,findUserById)
 router.get('/getalluser',getAllUser)
-router.get('/coach/:userId',GetCoach)
-router.get('/sponsor/:userId',GetSponsor)
 router.put('/approve/:id',ApproveUser)
 router.get('/search/:key',Search)
-router.post('/coach',coach)
-router.post('/sponsor',sponsor)
+
 
 
 

@@ -8,12 +8,10 @@ const cookieSession = require('cookie-session');
 const passport = require('passport')
 const passportSetUp=require('./passport.js')
 const authRoute = require('./routes/auth.js')
-const orderRoutes = require ('./routes/orderRoute.js')
 const chatRoute = require ('./routes/chatRoute.js');
 
 const image = require('./routes/image.js')
 const {graphqlHTTP} = require('express-graphql')
-const Schema = require('./Schema/Schema')
 const http = require("http")
 var xss = require("xss")
 //connect database
@@ -49,32 +47,16 @@ app.use(morgan('dev'))
 
 app.use(express.urlencoded({extended : false}))
 app.use('/api/user',require('./routes/userRoute.js'));
-app.use('/product',require('./routes/productRoute.js'));
-app.use('/course',require('./routes/courseRoute.js'));
+
 app.use('/api/upload', require('./routes/uploadRoute'));
 app.use("/auth",authRoute) ;
-app.use('/api/orders', orderRoutes);
 
-app.use('/api/event', require('./routes/Event.js'));
-app.use('/api/project', require('./routes/project.js'));
 app.use("/image",image);
 app.use('/chat', chatRoute)
 
 app.get('/api/config/paypal' , (req ,res)=>res.send(process.env.PAYPAL_CLIENT_ID))
 
 
-
-//
-
-
-
-app.use('/graphql',
-graphqlHTTP({
-  schema:Schema,
-  graphiql:true
-}))
-
-// npm run dev
 
 
 
