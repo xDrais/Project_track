@@ -14,20 +14,6 @@ import axios from "axios";
 
 import ReactGA from 'react-ga';
 
-import Roomi from './page/room/rommi';
-
-
-
-import {client} from './apollo.js'
-import { ApolloProvider } from '@apollo/client';
-
-import Calendar from './Components/FullCalendar/Calendar';
-
-import Video from './page/Video/Video'
-import HomePage from './page/Video/HomePage'
-import Mod from './page/Mod';
-import Kore from './page/3D/Kore';
-import Korean from './page/3D/Korean';
 
 
 ReactGA.initialize('G-Y1V026ZHPY');
@@ -65,7 +51,6 @@ useEffect(()=>
 })
 
   return (
-    <ApolloProvider client={client}>
 
     <Suspense fallback={<Loader />}>
     <Router>
@@ -98,31 +83,15 @@ useEffect(()=>
     <Route path="/profile" element={<> <Navbarr /> <Profile/> </>} />
     <Route path="/" element={<><Home/></>} />
     <Route path="/dashboard" element={<Dashboard/>} />
-
-
     <Route path="/userupdate" element={<> <Navbarr /> <UpdateUser /> </> } /> 
-
-
-
-
-		<Route path="/video/:url" element={<><Navbarr /> <Video /></>} />
-		<Route path="/meet" element={<><Navbarr /> <HomePage /></>} />
-		<Route path="/dron" element={<><Navbarr /> <Mod /></>} />
-		<Route path="/pills" element={<><Navbarr /> <Korean /></>} />
-    <Route path="/calendar" element={<>  <Navbarr />  <Calendar/>  </> } />
-
-
-
 
     <Route path="/verify-email/:emailToken" element={<><Navbarr /> <Login/> </>} />
 
-    <Route path="/room/:roomName" element={<Roomi/>} />
 
         </Routes>)}
     </Router>
     
     </Suspense>
-    </ApolloProvider>
 
     
   );

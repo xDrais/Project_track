@@ -191,47 +191,12 @@ function Navbarr() {
                 title={userInfo.lastName + " " + userInfo.firstName}
                 id="username"
               >
-                {userInfo.role.name === "userRole" && (
-                  <LinkContainer to="/projects">
-                    <NavDropdown.Item>
-                      {" "}
-                      <Link to="/projects">Project</Link>{" "}
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                )}
-                {userInfo.role.name === "sponsorRole" && (
-                  <LinkContainer to="/events">
-                    <NavDropdown.Item>
-                      {" "}
-                      <Link to="/events">Events</Link>{" "}
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                )}
                 <LinkContainer to="/profile">
                   <NavDropdown.Item>
                     {" "}
                     <Link to="/profile">PROFILE</Link>{" "}
                   </NavDropdown.Item>
                 </LinkContainer>
-
-
-
-                {userInfo?.role.name === "sponsorRole" && (
-                  <>
-                    <LinkContainer to="/spnsorupdate">
-                      <NavDropdown.Item>
-                        {" "}
-                        <Link to="/spnsorupdate">UPDATE PROFILE</Link>{" "}
-                      </NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/meet">
-                      <NavDropdown.Item>
-                        {" "}
-                        <Link to="/meet">Create Meet</Link>{" "}
-                      </NavDropdown.Item>
-                    </LinkContainer>
-                  </>
-                )}
 
                 {userInfo?.role.name === "userRole" && (
                   <LinkContainer to="/userupdate">
@@ -242,24 +207,6 @@ function Navbarr() {
                   </LinkContainer>
                 )}
 
-                {userInfo?.role.name === "coachRole" && (
-                  <LinkContainer to="/coachupdate">
-                    <NavDropdown.Item>
-                      {" "}
-                      <Link to="/coachupdate">UPDATE PROFILE</Link>{" "}
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                )}
-
-
-
-
-                <LinkContainer to="/calendar">
-                  <NavDropdown.Item>
-                    {" "}
-                    <Link to="/calendar">Calendar</Link>{" "}
-                  </NavDropdown.Item>
-                </LinkContainer>
                 <NavDropdown.Item onClick={logoutHandler}>
                   LOGOUT
                 </NavDropdown.Item>

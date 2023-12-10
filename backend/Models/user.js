@@ -25,10 +25,7 @@ const UserSchema = new mongoose.Schema({
     status: {
         type: String,enum: ['pendingAsCoach','pendingAsSponsor', 'approved', 'rejected' ,'' , 'pending'],default: ''
     },
-    enrollment: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Enrollment',
-      },
+    
 
 })
 module.exports = mongoose.model('User', UserSchema)
