@@ -150,12 +150,13 @@ app.get('/api/getClassbyLabel', async (req, res) => {
   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
    PREFIX owl: <http://www.w3.org/2002/07/owl#>
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-      SELECT DISTINCT ?class ?label ?image
+      SELECT DISTINCT ?class ?label ?image ?wastetype
       WHERE {
         ?class a owl:Class.
   
         OPTIONAL { ?class  foaf:depiction  ?image }
         OPTIONAL { ?class rdfs:label ?label }
+        OPTIONAL { ?class rdfs:comment ?wastetype }
         FILTER(CONTAINS(LCASE(?label), "${safeClassname.toLowerCase()}"))
       }`;
 
@@ -170,6 +171,56 @@ app.get('/api/getClassbyLabel', async (req, res) => {
     res.status(500).send('Error executing query');
   }
 });
+
+
+
+
+
+//---------------------------------------------------
+
+app.get('/api/getClassbyLabelcomment', async (req, res) => {
+
+  const classname = req.query.classname;
+
+
+  const safeClassname = classname.replace(/[^a-zA-Z0-9]/g, "");
+
+  const query = `
+  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+   PREFIX owl: <http://www.w3.org/2002/07/owl#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT DISTINCT ?class ?label ?image ?wastetype
+      WHERE {
+        ?class a owl:Class.
+        OPTIONAL { ?class rdfs:comment ?wastetype }
+        OPTIONAL { ?class  foaf:depiction  ?image }
+        OPTIONAL { ?class rdfs:label ?label }
+        
+        FILTER(CONTAINS(LCASE(?label), "${safeClassname.toLowerCase()}"))
+      }`;
+
+  try {
+    const results = await executeSparqlQuery(query);
+    if (results) {
+      res.json(results);
+    } else {
+      res.status(204).send('No results found');
+    }}
+     catch (error) {
+    res.status(500).send('Error executing query');
+  }
+});
+
+
+
+
+
+
+
+
+
+
 
 
 

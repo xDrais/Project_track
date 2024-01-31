@@ -104,6 +104,7 @@ function WasteBinMap() {
             <Popup>
               <strong>{bin.name}</strong>
               {bin.image && <img src={bin.image} alt="" style={{ width: '100px', height: 'auto' }} />}
+              <strong>{bin.type}</strong>
             </Popup>
           </Marker>
         ))}

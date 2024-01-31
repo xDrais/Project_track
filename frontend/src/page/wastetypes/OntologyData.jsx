@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './OntologyData.css'; // Make sure to create this CSS file
+import './OntologyData.css'; 
 import Navbarr from "../../Components/Navbar/navbar";
 import video from "./pottery2.mp4"
 
@@ -8,7 +8,7 @@ function OntologyData() {
     const [data, setData] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 8;
   
     const redirectionMap = {
       'http://webprotege.stanford.edu/RCIF5UBvU8sg9RqBpuLmld': 'https://en.wikipedia.org/wiki/Computer_monitor',  
@@ -75,7 +75,9 @@ function OntologyData() {
               <a href={getRedirectUrl(item.class.value)} target="_blank" rel="noopener noreferrer">
                 <div className="class">{item.class.value}</div>
               </a>
+
               <div className="label">{item.label.value}</div>
+              <div className="label">{item.wastetype?.value}</div>
               <div className="image">
                 {item.image?.value ? (
                   <img src={item.image.value} alt={item.label.value} />

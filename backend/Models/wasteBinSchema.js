@@ -15,7 +15,11 @@ const wasteBinSchema = new mongoose.Schema({
     }
   },
   image: String, // URL to the image of the waste bin
-  // Add other relevant fields like 'type' of bin, 'capacity', etc.
+  type: {
+    type: String,
+    enum: ['recycling', 'general waste', 'compost', 'hazardous'], // Example bin types
+    required: true
+  },
 });
 
 // Apply the 2dsphere index to the 'location' field for supporting geospatial queries
