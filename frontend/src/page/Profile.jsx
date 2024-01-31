@@ -168,34 +168,47 @@ const dispatch = useDispatch();
               </p>
             </div>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
-               
-                <GridContainer justify="center">
-                  {userInfo.role.name==="coach"  &&
-                  <Button  onClick={handle}>add more Experiance</Button>
-                  }
-                  {userInfo.role.name==="sponsor"  &&
-                  <Button  onClick={handle}  >add more Experiance</Button>
-                  }
-                  
+  <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
+  <GridContainer justify="center">
+  <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
+    <GridContainer justify="center">
+      {userInfo && (
+        <>
+          <GridItem xs={12} sm={6}>
+            <Typography variant="subtitle1" gutterBottom>Email:</Typography>
+            <Typography variant="body1">{userInfo.email}</Typography>
+          </GridItem>
+          <GridItem xs={12} sm={6}>
+            <Typography variant="subtitle1" gutterBottom>First Name:</Typography>
+            <Typography variant="body1">{userInfo.firstName}</Typography>
+          </GridItem>
+          <GridItem xs={12} sm={6}>
+            <Typography variant="subtitle1" gutterBottom>Last Name:</Typography>
+            <Typography variant="body1">{userInfo.lastName}</Typography>
+          </GridItem>
+          <GridItem xs={12} sm={6}>
+            <Typography variant="subtitle1" gutterBottom>CIN:</Typography>
+            <Typography variant="body1">{userInfo.cin}</Typography>
+          </GridItem>
+          <GridItem xs={12} sm={6}>
+            <Typography variant="subtitle1" gutterBottom>Phone Number:</Typography>
+            <Typography variant="body1">{userInfo.phone}</Typography>
+          </GridItem>
+          <GridItem xs={12} sm={6}>
+            <Typography variant="subtitle1" gutterBottom>Date of Birth:</Typography>
+            <Typography variant="body1">
+              {userInfo.dateOfBirth && new Date(userInfo.dateOfBirth).toLocaleDateString()}
+            </Typography>
+          </GridItem>
+          {/* Add more fields as needed */}
+        </>
+      )}
+    </GridContainer> 
+  </GridItem>
+</GridContainer>
 
-                </GridContainer>
-                
-                  
-                  {show && 
-                  <>
-                   {toggle.map((index)=>{
-                  return <Input
-                  key={Math.random()}
-                  /> 
-                  })} 
-                  <Button onClick={addFiled} > Add Filed</Button>
-                  </>
-                  }
-                  
-                  
-              </GridItem>
-            </GridContainer>
+  </GridItem>
+</GridContainer>
             
           </div>
         </div>

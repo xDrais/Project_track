@@ -3,6 +3,7 @@ import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 function LocationMarker({ setUserLocation, setNearestBin }) {
   useMapEvents({
@@ -10,10 +11,9 @@ function LocationMarker({ setUserLocation, setNearestBin }) {
       const { lat, lng } = e.latlng;
       setUserLocation([lat, lng]);
 
-      // Fetch the nearest waste bin given the new user's location
       axios.get(`http://localhost:5000/api/bins/nearest?latitude=${lat}&longitude=${lng}`)
         .then(response => {
-          setNearestBin(response.data); // Set the nearest bin
+          setNearestBin(response.data); 
         })
         .catch(error => {
           console.error('Error fetching nearest waste bin:', error);
@@ -21,13 +21,36 @@ function LocationMarker({ setUserLocation, setNearestBin }) {
     },
   });
 
-  return null; // This component does not render anything itself, but it does trigger side effects
+  return null; 
 }
 
 function WasteBinMap() {
   const [wasteBins, setWasteBins] = useState([]);
   const [nearestBin, setNearestBin] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+   // Function to handle search
+   const handleSearch = async () => {
+    const provider = new OpenStreetMapProvider();
+
+    const results = await provider.search({ query: searchTerm });
+    if (results && results.length > 0) {
+      const { x, y } = results[0]; 
+      const newLocation = [y, x];
+
+      setUserLocation(newLocation);
+
+      axios.get(`http://localhost:5000/api/bins/nearest?latitude=${y}&longitude=${x}`)
+        .then(response => {
+          setNearestBin(response.data); 
+        })
+        .catch(error => {
+          console.error('Error fetching nearest waste bin:', error);
+        });
+    } else {
+      console.error('No results found for this search term');
+    }
+  };
 
   useEffect(() => {
     // Attempt to fetch all waste bins
@@ -43,22 +66,32 @@ function WasteBinMap() {
   const binIcon = (imageUrl) => {
     return L.icon({
       iconUrl: imageUrl,
-      iconSize: [35, 35], // Size of the icon
-      iconAnchor: [17, 35], // Point of the icon which will correspond to marker's location
-      popupAnchor: [0, -35] // Point from which the popup should open relative to the iconAnchor
+      iconSize: [35, 35], 
+      iconAnchor: [17, 35], 
+      popupAnchor: [0, -35] 
     });
   };
 
   const userIcon = L.icon({
     iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Twitter_default_profile_400x400.png/640px-Twitter_default_profile_400x400.png', // URL to a user location icon image
-    iconSize: [35, 35],
-    iconAnchor: [17, 35],
-    popupAnchor: [0, -35]
+    iconSize: [50, 50], 
+  iconAnchor: [25, 50], 
+  popupAnchor: [0, -50]
   });
 
   return (
     <>
       <h1>Waste Bin Locations</h1>
+         {/* Search input */}
+         <div style={{ textAlign: 'center', margin: '10px 0' }}>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Enter a location"
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
       <MapContainer center={[48.8566, 2.3522]} zoom={13} style={{ height: '400px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <LocationMarker setUserLocation={setUserLocation} setNearestBin={setNearestBin} />
