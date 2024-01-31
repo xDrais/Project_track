@@ -6,6 +6,11 @@ import Dashboard from './page/Dashboard';
 import Navbarr from './Components/Navbar/navbar';
 import Loader from './Components/Loader';
 import Home from './page/Home/home';
+
+
+import OntologyData from './page/wastetypes/OntologyData';
+
+
 import  { useEffect, useState } from "react";
 import UpdateUser from './page/Modifyaccount/updateUser'
 import { useDispatch , useSelector , } from "react-redux";
@@ -63,6 +68,7 @@ useEffect(()=>
     <Route path="/reset-password" element={<><Navbarr /><ResetPassword/> </>} />
     <Route path="/profile" element={<><Navbarr /> <Profile/> </>} />
     <Route path="/" element={<> <Home/> </>} />
+    <Route path="/OntologyData" element={<> <OntologyData/> </>} />
     <Route path="/verify-email/:emailToken" element={<><Navbarr /><Login/> </>} />
     <Route path="/productdetail/:id">
   <Navbarr />
@@ -87,6 +93,7 @@ useEffect(()=>
 
     <Route path="/verify-email/:emailToken" element={<><Navbarr /> <Login/> </>} />
 
+    <Route path="/OntologyData" element={<> <OntologyData/> </>} />
 
         </Routes>)}
     </Router>

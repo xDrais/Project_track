@@ -1,0 +1,91 @@
+.ontology-container {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .search-input {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 300px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .card {
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-content {
+    padding: 15px;
+  }
+  
+  .card .class {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .card .label {
+    margin-bottom: 15px;
+    color: #555;
+  }
+  
+  .card .image {
+    height: 150px;
+    line-height: 150px;
+  }
+  
+  .card .image img {
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center; /* Aligns the children (buttons) horizontally in the center */
+    align-items: center; /* Aligns the children (buttons) vertically in the center */
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 5px 10px;
+    margin-right: 10px; /* You may want to remove the margin-right on the last button */
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+  
+  .pagination button:last-child {
+    margin-right: 0; /* Remove margin for the last button */
+  }
+  
+  .pagination button:disabled {
+    background-color: #eaeaea;
+    cursor: default;
+  }
+  
+  .pagination span {
+    margin: 0 5px;
+  }
+  
+  .fullscreen-video {
+    position: fixed;
+    top: -100px;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: fill;
+    z-index: -1;
+  }
+  
+  

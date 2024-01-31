@@ -9,6 +9,7 @@ const wasteBinSchema = new mongoose.Schema({
       index: '2dsphere' // Create a geospatial index
     }
   },
+  image: String, // URL to the image of the waste bin
   // Add other relevant fields like 'type' of bin, 'capacity', etc.
 });
 

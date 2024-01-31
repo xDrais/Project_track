@@ -6,6 +6,8 @@ import Navbarr from "../../Components/Navbar/navbar";
 import OntologyData from './ontology'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import WasteMap from '../wasteBinsMap/WasteBinMap';
+
 function Home(){
 return(
 <>
@@ -17,8 +19,8 @@ return(
      <div>
 </div>
 <br />
-<OntologyData></OntologyData>
-    
+
+    <WasteMap></WasteMap>
      <br />
      </>);
 }

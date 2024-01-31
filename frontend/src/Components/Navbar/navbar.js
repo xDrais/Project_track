@@ -166,8 +166,13 @@ function Navbarr() {
 
     <Navbar id="me" className={"fixed-top"} expand="lg" background-color="transparent"><nav className="NavbarItems">
       <ul>
-        <li > <Link id="home" className="nav_links" to="/">
+        <li > 
+          <Link id="home" className="nav_links" to="/">
           HOME
+        </Link>
+          <Link id="waste" className="nav_links" to="/OntologyData">
+          Waste types
+
         </Link>
           <Link id="about us" to="/aboutus" className="nav_links">
             ABOUT US
