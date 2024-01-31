@@ -10,6 +10,8 @@ const passportSetUp=require('./passport.js')
 const authRoute = require('./routes/auth.js')
 
 const image = require('./routes/image.js')
+const wasteBinSchema = require('./Models/wasteBinSchema.js')
+
 const http = require("http")
 var xss = require("xss")
 const propertyRoutes = require('./routes/propertyRoutes');
@@ -217,7 +219,36 @@ app.get('/api/getinstances', async (req, res) => {
 
 
 
+// Route to find the nearest waste bin
+app.get('/api/bins/nearest', async (req, res) => {
+  const { latitude, longitude } = req.query;
 
+  if (!latitude || !longitude) {
+    return res.status(400).send({ message: 'Latitude and longitude query parameters are required.' });
+  }
+
+  try {
+    const nearestWasteBin = await wasteBinSchema.findOne({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [parseFloat(longitude), parseFloat(latitude)] // MongoDB expects [longitude, latitude]
+          },
+          $maxDistance: 5000 // Adjust as needed
+        }
+      }
+    });
+    if (nearestWasteBin) {
+      res.json(nearestWasteBin);
+    } else {
+      res.status(404).send({ message: 'No waste bins found within the search radius.' });
+    }
+  } catch (error) {
+    console.error('Error finding nearest waste bin:', error);
+    res.status(500).send({ message: 'Error finding nearest waste bin' });
+  }
+});
 
 
 

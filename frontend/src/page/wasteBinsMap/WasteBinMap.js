@@ -6,6 +6,7 @@ import L from 'leaflet';
 
 function WasteBinMap() {
   const [wasteBins, setWasteBins] = useState([]);
+  const [userLocation, setUserLocation] = useState(null); // New state for user location
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/bins')
@@ -15,6 +16,14 @@ function WasteBinMap() {
       .catch(error => {
         console.error('Error fetching waste bin data:', error);
       });
+
+    // Get the user's current location
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      setUserLocation([latitude, longitude]);
+    }, error => {
+      console.error('Error fetching user location:', error);
+    });
   }, []);
 
   const binIcon = (imageUrl) => {
@@ -26,10 +35,17 @@ function WasteBinMap() {
     });
   };
 
+  const userIcon = L.icon({
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Twitter_default_profile_400x400.png/640px-Twitter_default_profile_400x400.png', // URL to a user location icon image
+    iconSize: [35, 35],
+    iconAnchor: [17, 35],
+    popupAnchor: [0, -35]
+  });
+
   return (
     <>
       <h1>Waste Bin Locations</h1>
-      <MapContainer center={[48.8566, 2.3522]} zoom={13} style={{ height: '400px', width: '100%' }}>
+      <MapContainer center={userLocation || [48.8566, 2.3522]} zoom={13} style={{ height: '400px', width: '100%' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
@@ -47,6 +63,14 @@ function WasteBinMap() {
             </Popup>
           </Marker>
         ))}
+        {userLocation && (
+          <Marker
+            position={userLocation}
+            icon={userIcon}
+          >
+            <Popup>You are here</Popup>
+          </Marker>
+        )}
       </MapContainer>
     </>
   );
