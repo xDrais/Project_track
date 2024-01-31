@@ -224,7 +224,7 @@ app.get('/api/bins/nearest', async (req, res) => {
   const { latitude, longitude } = req.query;
 
   if (!latitude || !longitude) {
-    return res.status(400).send({ message: 'Latitude and longitude query parameters are required.' });
+    return res.status(400).send("Latitude and longitude query parameters are required.");
   }
 
   try {
@@ -232,21 +232,21 @@ app.get('/api/bins/nearest', async (req, res) => {
       location: {
         $near: {
           $geometry: {
-            type: "Point",
-            coordinates: [parseFloat(longitude), parseFloat(latitude)] // MongoDB expects [longitude, latitude]
+             type: "Point",
+             coordinates: [parseFloat(longitude), parseFloat(latitude)]
           },
-          $maxDistance: 5000 // Adjust as needed
+          $maxDistance: 10000 // Adjust this value based on your needs
         }
       }
     });
     if (nearestWasteBin) {
       res.json(nearestWasteBin);
     } else {
-      res.status(404).send({ message: 'No waste bins found within the search radius.' });
+      res.status(404).send("No nearby waste bins found.");
     }
   } catch (error) {
-    console.error('Error finding nearest waste bin:', error);
-    res.status(500).send({ message: 'Error finding nearest waste bin' });
+    console.error("Error finding nearest waste bin:", error);
+    res.status(500).send("An error occurred while finding the nearest waste bin.");
   }
 });
 
