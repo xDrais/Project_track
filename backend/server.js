@@ -13,6 +13,7 @@ const image = require('./routes/image.js')
 const http = require("http")
 var xss = require("xss")
 const propertyRoutes = require('./routes/propertyRoutes');
+const wastebinsRoutes = require('./routes/binsRoutes.js');
 const statementRoutes = require('./routes/statementRoutes');
 const resourceRoutes = require('./routes/resourceRoutes');
 const executeSparqlQuery = require('./Controllers/executeSparqlQuery.js');
@@ -58,6 +59,7 @@ app.use("/image",image);
 
 // Use routes
 app.use('/api/properties', propertyRoutes);
+app.use('/api/bins', wastebinsRoutes);
 
 
 
@@ -71,25 +73,159 @@ app.get('/api/query', async (req, res) => {
   }
 });
 
-app.get('/api/getObject', async (req, res) => {
-  const query = ' select distinct ?subject ?predicate ?object where {?subject ?predicate ?object.filter(contains(?object, "ScreensAndTVSAndMonitoris"@en)).}'; 
-  const results = await executeSparqlQuery(query);
-  if (results) {
-    res.json(results);
-  } else {
+//               ---------------------------
+app.get('/api/getObjectbyname', async (req, res) => {
+  // Retrieve classname from query parameters
+  const classname = req.query.classname;
+
+  // Sanitize and validate the classname
+  // This is a basic example. Depending on your use case, you might need more robust sanitization
+  const safeClassname = classname.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+
+  // Ensure the classname is not empty after sanitization
+  if (!safeClassname) {
+    return res.status(400).send('Invalid input');
+  }
+
+  const query = `
+    SELECT DISTINCT ?subject ?predicate ?object
+    WHERE {
+      ?subject ?predicate ?object
+      FILTER(CONTAINS(?object, "${safeClassname}"))
+    }`;
+
+  try {
+    const results = await executeSparqlQuery(query);
+    if (results) {
+      res.json(results);
+    } else {
+      res.status(204).send('No results found');
+    }
+  } catch (error) {
+    console.error('Error executing SPARQL query:', error);
     res.status(500).send('Error executing query');
   }
 });
 
-app.get('/api/getClassbyLabel', async (req, res) => {
-  const query = 'PREFIX owl: <http://www.w3.org/2002/07/owl#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT DISTINCT ?class ?label WHERE {?class a owl:Class. OPTIONAL { ?class rdfs:label ?label}filter(contains(?label, "ScreensAndTVSAnd")).}'; 
-  const results = await executeSparqlQuery(query);
-  if (results) {
-    res.json(results);
-  } else {
+
+//----------------------------------------------------
+
+
+app.get('/api/getObject', async (req, res) => {
+
+  const query = `
+    SELECT DISTINCT ?subject ?predicate ?object
+    WHERE {
+      ?subject ?predicate ?object
+    }`;
+
+  try {
+    const results = await executeSparqlQuery(query);
+    if (results) {
+      res.json(results);
+    } else {
+      res.status(204).send('No results found');
+    }
+  } catch (error) {
+    console.error('Error executing SPARQL query:', error);
     res.status(500).send('Error executing query');
   }
 });
+
+
+
+//---------------------------------------------------
+
+app.get('/api/getClassbyLabel', async (req, res) => {
+
+  const classname = req.query.classname;
+
+
+  const safeClassname = classname.replace(/[^a-zA-Z0-9]/g, "");
+
+  const query = `
+  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+   PREFIX owl: <http://www.w3.org/2002/07/owl#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT DISTINCT ?class ?label ?image
+      WHERE {
+        ?class a owl:Class.
+  
+        OPTIONAL { ?class  foaf:depiction  ?image }
+        OPTIONAL { ?class rdfs:label ?label }
+        FILTER(CONTAINS(LCASE(?label), "${safeClassname.toLowerCase()}"))
+      }`;
+
+  try {
+    const results = await executeSparqlQuery(query);
+    if (results) {
+      res.json(results);
+    } else {
+      res.status(204).send('No results found');
+    }}
+     catch (error) {
+    res.status(500).send('Error executing query');
+  }
+});
+
+
+
+
+
+
+
+// getting the related informations to one enitity example fruits 
+
+
+app.get('/api/getinstances', async (req, res) => {
+
+
+  const query = `
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX owl: <http://www.w3.org/2002/07/owl#>
+  
+  SELECT ?instance ?label ?imageURL
+  WHERE {
+    ?instance rdf:type <http://webprotege.stanford.edu/R7Q3isikghp43ZPWddExqsz> .
+    OPTIONAL { ?instance rdfs:label ?label }
+    OPTIONAL { ?instance <urn:webprotege:ontology:d6e1b789-6146-4270-b384-c9c4c9d15412#hasImageURL> ?imageURL }
+  }
+  `;
+
+  try {
+    const results = await executeSparqlQuery(query);
+    if (results) {
+      res.json(results);
+    } else {
+      res.status(204).send('No results found');
+    }}
+     catch (error) {
+    res.status(500).send('Error executing query');
+  }
+});
+
+
+////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // npm run dev!

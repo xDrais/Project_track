@@ -1,8 +1,8 @@
-const fs = require('fs');
-const { Parser } = require('n3');
+import fs from 'fs';
+import { Parser } from 'n3';
 
 // Since dynamic imports are not supported in CommonJS, you might need to directly require the module
-const rdfDataModel = require('@rdfjs/data-model');
+import rdfDataModel from '@rdfjs/data-model';
 
 // File path to your Turtle file
 const filePath = './garbage_classification.ttl';
