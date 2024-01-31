@@ -1,8 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+
+function LocationMarker({ setUserLocation, setNearestBin }) {
+  useMapEvents({
+    click(e) {
+      const { lat, lng } = e.latlng;
+      setUserLocation([lat, lng]);
+
+      // Fetch the nearest waste bin given the new user's location
+      axios.get(`http://localhost:5000/api/bins/nearest?latitude=${lat}&longitude=${lng}`)
+        .then(response => {
+          setNearestBin(response.data); // Set the nearest bin
+        })
+        .catch(error => {
+          console.error('Error fetching nearest waste bin:', error);
+        });
+    },
+  });
+
+  return null; // This component does not render anything itself, but it does trigger side effects
+}
 
 function WasteBinMap() {
   const [wasteBins, setWasteBins] = useState([]);
@@ -18,24 +38,7 @@ function WasteBinMap() {
       .catch(error => {
         console.error('Error fetching waste bin data:', error);
       });
-
-    // Attempt to get the user's current location
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      setUserLocation([latitude,longitude]);
-
-      // Fetch the nearest waste bin given the user's location
-      axios.get(`http://localhost:5000/api/bins/nearest?latitude=${latitude}&longitude=${longitude}`)
-        .then(response => {
-          setNearestBin(response.data); // Set the nearest bin
-        })
-        .catch(error => {
-          console.error('Error fetching nearest waste bin:', error);
-        });
-    }, error => {
-      console.error('Error fetching user location:', error);
-    });
-  }, []); // This empty array ensures the effect runs only once when the component mounts
+  }, []);
 
   const binIcon = (imageUrl) => {
     return L.icon({
@@ -56,8 +59,9 @@ function WasteBinMap() {
   return (
     <>
       <h1>Waste Bin Locations</h1>
-      <MapContainer center={userLocation || [48.8566, 2.3522]} zoom={13} style={{ height: '400px', width: '100%' }}>
+      <MapContainer center={[48.8566, 2.3522]} zoom={13} style={{ height: '400px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <LocationMarker setUserLocation={setUserLocation} setNearestBin={setNearestBin} />
         {wasteBins.map(bin => (
           <Marker
             key={bin._id}
